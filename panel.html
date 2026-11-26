@@ -1,0 +1,7 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="/__aicode/theme.css"><script src="/__aicode/aicode.js"></script><title>会话自动续接</title><style>body{font-family:system-ui;padding:20px;background:var(--aicode-page-bg);color:var(--aicode-on-surface)}button{padding:12px;margin:8px 8px 8px 0}pre{white-space:pre-wrap;overflow-wrap:anywhere}p{line-height:1.6}</style></head><body><h2>会话自动续接</h2><p>监听 Nox 的模型请求结束事件。仅当事件载荷包含“当前会话模型已回复 N 轮，达到上限”或“This conversation has reached N model turns”时，自动新建同模型会话并携带任务历史继续。普通错误不触发；原会话保留；同一来源会话只处理一次。错误正文若未由 Nox 事件提供，插件无法识别；下方事件记录用于核对实际载荷。</p><button id="toggle" disabled>加载中</button><button id="refresh">刷新状态</button><h3>最近事件与续接结果</h3><pre id="status"></pre><script>
+let enabled=false;
+async function refresh(){try{const s=await aicode.invoke('control',{action:'status'});enabled=s.enabled;document.querySelector('#toggle').textContent=enabled?'关闭自动续接':'开启自动续接';document.querySelector('#toggle').disabled=false;document.querySelector('#status').textContent=JSON.stringify(s,null,2);}catch(e){document.querySelector('#status').textContent=String(e.message||e);}}
+document.querySelector('#toggle').onclick=async()=>{try{await aicode.invoke('control',{action:'setEnabled',enabled:!enabled});await refresh();}catch(e){document.querySelector('#status').textContent=String(e.message||e);}};
+document.querySelector('#refresh').onclick=refresh;refresh();
+</script></body></html>

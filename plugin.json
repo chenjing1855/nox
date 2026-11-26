@@ -1,0 +1,21 @@
+{
+  "manifestVersion": 1,
+  "id": "local.session-relay",
+  "name": "会话自动续接",
+  "description": "模型请求失败时自动新建会话，携带历史任务记录继续。",
+  "version": "1.0.4",
+  "publisher": "local",
+  "repository": "https://github.com/chenjing1855/nox",
+  "license": "MIT",
+  "engines": {"pluginApi": "^1.0.0"},
+  "runtime": {"type": "javascript", "entry": "main.js", "resident": true},
+  "contributes": {
+    "configPage": "panel.html",
+    "uiEntries": [{"id":"settings","title":"会话自动续接","slot":"settings.general","page":"panel.html"}],
+    "tools": [{"id": "control", "title": "续接控制", "description": "查询自动续接状态与只读接口诊断。", "inputSchema": "control.json", "handler": "control"}],
+    "hooks": [
+      {"id": "finished", "event": "agent.run.finished", "mode": "observe", "handler": "finished"},
+      {"id": "request", "event": "agent.request.finished", "mode": "observe", "handler": "finished"}
+    ]
+  }
+}

@@ -1,0 +1,1 @@
+{"type":"object","properties":{"action":{"type":"string","enum":["status","probe"]},"method":{"type":"string"},"params":{"type":"object"}},"required":["action"]}
